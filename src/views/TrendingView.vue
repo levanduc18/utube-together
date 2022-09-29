@@ -1,9 +1,9 @@
 <template>
-  <section>About</section>
+  <section>Trending</section>
 </template>
 
 <script>
 export default {
-  name: "AboutView",
+  name: "TrendingView",
 };
 </script>

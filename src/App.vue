@@ -1,30 +1,95 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <div class="header"><TheHeader /></div>
+  <div class="content">
+    <router-view />
+    <scroll-to-top />
+    <notifications position="bottom center" />
+  </div>
+  <div class="footer"><TheFooter /></div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import TheHeader from "./components/commons/TheHeader.vue";
+import ScrollToTop from "./components/commons/ScrollToTop.vue";
+import { mapActions, mapGetters } from "vuex";
+import authApi from "./api/authApi";
+import TheFooter from "./components/commons/TheFooter.vue";
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  name: "App",
+  components: { TheHeader, ScrollToTop, TheFooter },
+  computed: {
+    ...mapGetters("authentication", ["getAuthenticated", "getProfile"]),
+    ...mapGetters("room", ["getRoomList", "getCurrentRoom"]),
+  },
+  async beforeCreate() {
+    try {
+      await authApi.getAuthenticated();
+      this.loginWithGoogle({ isAuthenticated: true });
+    } catch (error) {
+      this.loginWithGoogle({ isAuthenticated: false });
     }
-  }
-}
-</style>
+  },
+  async mounted() {
+    if (this.getAuthenticated) {
+      const response = await authApi.getProfile();
+      const { id, name, email, avatar } = response;
+      this.setProfile({ id, name, email, avatar });
+    }
+  },
+  methods: {
+    ...mapActions("authentication", ["setProfile", "loginWithGoogle"]),
+    ...mapActions("room", [
+      "setRoomList",
+      "setCurrentRoom",
+      "setIsEnterPassword",
+    ]),
+  },
+  watch: {
+    async getAuthenticated() {
+      if (this.getAuthenticated) {
+        const response = await authApi.getProfile();
+        const { id, name, email, avatar } = response;
+        this.setProfile({ id, name, email, avatar });
+      }
+    },
+  },
+  sockets: {
+    error: function (data) {
+      this.$notify({
+        type: "error",
+        text: data,
+      });
+    },
+    createdRoom: function (data) {
+      let cloneRoomList = [data, ...this.getRoomList];
+      this.setRoomList(cloneRoomList);
+    },
+    changedVideoUrl: function (data) {
+      this.$notify({
+        type: "info",
+        text: data.user + " has just changed video url",
+      });
+    },
+    clientdisconnecting: function () {
+      this.$socket.emit("leaveRoom", {
+        name: this.getProfile?.name,
+        room: this.getCurrentRoom,
+      });
+    },
+    joinedRoom: async function (data) {
+      this.setIsEnterPassword(true);
+      this.$notify({
+        type: "info",
+        text: `${data.user} has just joined this room`,
+      });
+    },
+    leavedRoom: function (data) {
+      this.$notify({
+        type: "error",
+        text: `${data.user} has just left this room!`,
+      });
+    },
+  },
+};
+</script>
