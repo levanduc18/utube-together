@@ -376,8 +376,7 @@ export default {
 }
 .item {
   margin-left: 6px;
-  flex: 1;
-  padding-right: 12px;
+  max-width: 160px;
   word-wrap: break-word;
   text-align: left;
   margin-top: 4px;
@@ -406,5 +405,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media only screen and (min-width: 1240px) {
+  .item {
+    max-width: 400px;
+  }
 }
 </style>
