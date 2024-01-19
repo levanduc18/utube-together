@@ -72,7 +72,6 @@ export default {
   .title {
     color: #fff;
     font-size: 32px;
-    font-family: $title-font;
   }
   .carousel {
     width: 100%;

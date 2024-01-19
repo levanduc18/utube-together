@@ -118,7 +118,7 @@ export default {
   align-items: center;
   .showButton {
     width: 60px;
-    height: 50px;
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;

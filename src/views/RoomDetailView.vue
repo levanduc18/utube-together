@@ -62,6 +62,9 @@
           @mouseenter="isDisplayUsers = true"
           @mouseout="isDisplayUsers = false"
         >
+          <span :style="{ 'margin-right': '6px' }">
+            <font-awesome-icon :icon="['fas', 'eye']" size="md" />
+          </span>
           {{ this.getCurrentUsersEnterRoom.length + " watching" }}
           <div v-if="isDisplayUsers" class="display-users">
             <div
@@ -217,6 +220,7 @@ export default {
             status: videoState,
             currentTime: currentTime,
             user: this.getProfile?.id,
+            userName: this.getProfile?.name,
           });
         }
       }
@@ -311,6 +315,10 @@ export default {
         }
         if (data.status == 0) this.$refs.yt.stopVideo();
       }
+      this.$notify({
+        type: "info",
+        text: `${data.userName} changed the video status`,
+      });
     },
     receivedMessage: function (data) {
       this.messageList = [...this.messageList, data];
@@ -347,15 +355,15 @@ export default {
       display: flex;
       flex-direction: row;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
       padding: 8px 120px;
       .label {
-        min-width: 130px;
+        min-width: 160px;
         border: 1px rgba(255, 255, 255, 0.2) solid;
         background-color: $dark-color;
         border-right: transparent;
-        padding: 13px 16px;
-        font-size: 17px;
+        padding: 12px 16px;
+        font-size: 16px;
       }
     }
     .container {
@@ -410,7 +418,7 @@ export default {
 }
 
 .button {
-  padding: 13px 16px;
+  padding: 12px 16px;
 }
 
 .message-item {
@@ -456,7 +464,7 @@ export default {
 }
 
 .userNumber {
-  margin-top: 8px;
+  margin-top: 16px;
   cursor: pointer;
   position: relative;
 }

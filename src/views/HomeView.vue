@@ -62,7 +62,6 @@ export default {
     z-index: -1;
   }
   .home_general-info {
-    font-family: $title-font;
     width: 100%;
     padding: 120px 0 120px 0;
 

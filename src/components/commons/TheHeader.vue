@@ -128,7 +128,6 @@ export default {
 .nav {
   width: 100%;
   height: 84px;
-  font-family: $title-font;
   display: flex;
   align-items: center;
   padding: 0 24px;
