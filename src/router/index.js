@@ -1,11 +1,9 @@
-import AboutView from "@/views/AboutView.vue";
-import ContactView from "@/views/ContactView.vue";
+// import AboutView from "@/views/AboutView.vue";
+// import ContactView from "@/views/ContactView.vue";
 import RoomView from "@/views/RoomView.vue";
-import TrendingView from "@/views/TrendingView.vue";
 import LoginView from "@/views/LoginView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import SignupView from "@/views/SignupView.vue";
 import store from "@/store";
 import authApi from "@/api/authApi";
 import RoomDetailView from "@/views/RoomDetailView.vue";
@@ -28,31 +26,20 @@ const routes = [
     name: "roomDetail",
     component: RoomDetailView,
   },
-  {
-    path: "/trending",
-    name: "trending",
-    component: TrendingView,
-  },
-  {
-    path: "/about",
-    name: "about",
-    component: AboutView,
-  },
-  {
-    path: "/contact",
-    name: "contact",
-    component: ContactView,
-  },
+  // {
+  //   path: "/about",
+  //   name: "about",
+  //   component: AboutView,
+  // },
+  // {
+  //   path: "/contact",
+  //   name: "contact",
+  //   component: ContactView,
+  // },
   {
     path: "/login",
     name: "login",
     component: LoginView,
-    meta: { requireAuth: false },
-  },
-  {
-    path: "/signup",
-    name: "signup",
-    component: SignupView,
     meta: { requireAuth: false },
   },
   { path: "/:pathMatch(.*)*", component: NotFoundVue },

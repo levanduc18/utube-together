@@ -20,7 +20,11 @@ export default {
   components: { TheHeader, ScrollToTop, TheFooter },
   computed: {
     ...mapGetters("authentication", ["getAuthenticated", "getProfile"]),
-    ...mapGetters("room", ["getRoomList", "getCurrentRoom"]),
+    ...mapGetters("room", [
+      "getRoomList",
+      "getCurrentRoom",
+      "getCurrentUsersEnterRoom",
+    ]),
   },
   async beforeCreate() {
     try {
@@ -43,6 +47,7 @@ export default {
       "setRoomList",
       "setCurrentRoom",
       "setIsEnterPassword",
+      "setCurrentUsersEnterRoom",
     ]),
   },
   watch: {
@@ -83,6 +88,9 @@ export default {
         type: "info",
         text: `${data.user} has just joined this room`,
       });
+      let users = [...this.getCurrentUsersEnterRoom];
+      users.push(data.user);
+      this.setCurrentUsersEnterRoom(users);
     },
     leavedRoom: function (data) {
       this.$notify({

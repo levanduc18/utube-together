@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="footer"
-    v-if="currentRouteName != 'login' && currentRouteName != 'signup'"
-  >
+  <div class="footer" v-if="currentRouteName != 'login'">
     <div class="left">
       <div class="nav_left">
         <img :src="logoPNG" width="32" height="32" />

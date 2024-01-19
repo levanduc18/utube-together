@@ -8,6 +8,9 @@ const mutations = {
   updateIsEnterPassword(state, isEnterPassword) {
     state.isEnterPassword = isEnterPassword;
   },
+  updateCurrentUsersEnterRoom(state, currentUsers) {
+    state.currentUsersEnterRoom = currentUsers;
+  },
 };
 
 export default mutations;

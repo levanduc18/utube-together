@@ -10,6 +10,10 @@ const getters = {
   getIsEnterPassword: (state) => {
     return state.isEnterPassword;
   },
+
+  getCurrentUsersEnterRoom: (state) => {
+    return state.currentUsersEnterRoom;
+  },
 };
 
 export default getters;

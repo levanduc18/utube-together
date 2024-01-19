@@ -2,7 +2,7 @@
   <div
     class="nav"
     :class="{ navOnTop: view.topOfPage }"
-    v-if="currentRouteName != 'login' && currentRouteName != 'signup'"
+    v-if="currentRouteName != 'login'"
   >
     <div class="nav_left">
       <img :src="logoPNG" width="32" height="32" />
@@ -22,21 +22,16 @@
         >
           Room
         </router-link>
-        <router-link class="nav_center-menu-item" to="/trending" exact>
-          Trending
-        </router-link>
-        <router-link class="nav_center-menu-item" to="/about" exact>
+
+        <!-- <router-link class="nav_center-menu-item" to="/about" exact>
           About
         </router-link>
         <router-link class="nav_center-menu-item" to="/contact" exact>
           Contact
-        </router-link>
+        </router-link> -->
       </ul>
     </div>
     <div class="nav_right" v-if="!getAuthenticated">
-      <router-link class="nav_center-menu-item" to="/signup" exact>
-        Sign up
-      </router-link>
       <router-link class="nav_center-menu-item" to="/login" exact>
         <button class="button">Log in</button>
       </router-link>

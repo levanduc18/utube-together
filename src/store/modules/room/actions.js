@@ -10,6 +10,9 @@ const actions = {
   setIsEnterPassword({ commit }, isEnterPassword) {
     commit("updateIsEnterPassword", isEnterPassword);
   },
+  setCurrentUsersEnterRoom({ commit }, currentUsers) {
+    commit("updateCurrentUsersEnterRoom", currentUsers);
+  },
 };
 
 export default actions;

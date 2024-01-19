@@ -4,57 +4,12 @@
     <div class="login-form-container">
       <div class="login-form-title">LOG IN</div>
       <div class="login-form-content">
-        <div class="input-container">
-          <div class="input-label">Email Address</div>
-          <input class="input" type="text" v-model="email" />
-          <div class="error-text" v-if="isErrorEmail">
-            Email is wrong format
-          </div>
-        </div>
-        <div class="input-container">
-          <div class="input-label">Password</div>
-          <div class="password-container">
-            <input
-              class="input"
-              :type="isShowPassword ? 'text' : 'password'"
-              v-model="password"
-            />
-
-            <div class="showButton" @click="isShowPassword = !isShowPassword">
-              <font-awesome-icon
-                :icon="['fas', 'eye-slash']"
-                class="button-icon"
-                v-if="isShowPassword"
-              />
-              <font-awesome-icon
-                :icon="['fas', 'eye']"
-                class="button-icon"
-                v-else
-              />
-            </div>
-          </div>
-          <div class="error-text" v-if="isErrorPassword">
-            Password must be longer 6 characters
-          </div>
-        </div>
-
+        <div>WELCOME TO UTUBE TOGETHER</div>
         <div class="button-container">
-          <div class="checkbox-container">
-            <input type="checkbox" class="checkbox" />
-            <span>Remember me</span>
-          </div>
-          <button class="button" @click="handleLogin()">Log in</button>
-          <div class="or-container">OR</div>
           <a :href="API_URL + '/auth/google'" class="login-with-gg">
             <img :src="logoGG" width="20" height="20" />
             <span class="login-with-gg-title"> Login with Google</span>
           </a>
-          <div class="link-container">
-            <router-link class="nav_center-menu-item" to="/signup" exact>
-              <span class="link-left">Sign up</span>
-            </router-link>
-            <span class="link-right">Lost your password?</span>
-          </div>
         </div>
       </div>
     </div>
@@ -126,7 +81,7 @@ export default {
     width: 400px;
     background-color: $dark-color;
     z-index: 2;
-    padding: 20px;
+    padding: 40px;
     .login-form-title {
       width: 100%;
       text-align: left;
@@ -147,87 +102,33 @@ export default {
       border-bottom: 3px $primary-color solid;
       box-sizing: border-box;
     }
-    .login-form-content {
-      padding: 24px 0;
-      .input-container {
-        text-align: left;
-        margin-bottom: 24px;
-        .input-label {
-          margin-bottom: 8px;
-        }
-        .password-container {
-          display: flex;
-          align-items: center;
-          .showButton {
-            width: 60px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #333;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-          }
-          .showButton:hover {
-            background-color: rgb(88, 88, 88);
-          }
-        }
-        .error-text {
-          color: red;
-          margin-top: 6px;
-          font-size: 14px;
+
+    .button-container {
+      text-align: left;
+      margin-top: 24px;
+
+      .login-with-gg {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 0;
+        background-color: rgb(228, 228, 228);
+        cursor: pointer;
+        .login-with-gg-title {
+          color: $black-color;
+          margin-left: 16px;
         }
       }
-      .button-container {
-        text-align: left;
-        .checkbox-container {
-          display: flex;
-          align-items: center;
-          margin-bottom: 24px;
-          .checkbox {
-            margin-right: 12px;
-          }
-        }
-        .link-container {
-          margin-top: 24px;
-          .link-left {
-            color: $primary-color;
-            padding-right: 8px;
-            border-right: 1px #fff solid;
-            cursor: pointer;
-          }
-          .link-right {
-            color: $primary-color;
-            padding-left: 8px;
-            cursor: pointer;
-          }
-          .link-left:hover,
-          .link-right:hover {
-            filter: brightness(120%);
-          }
-        }
-        .or-container {
-          padding: 16px 0;
-          text-align: center;
-        }
-        .login-with-gg {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 12px 0;
-          background-color: rgb(228, 228, 228);
-          cursor: pointer;
-          .login-with-gg-title {
-            color: $black-color;
-            margin-left: 16px;
-          }
-        }
-        .login-with-gg:hover {
-          background-color: #fff;
-        }
+      .login-with-gg:hover {
+        background-color: #fff;
       }
     }
   }
+}
+
+.login-form-content {
+  margin-top: 24px;
+  text-align: left;
 }
 </style>

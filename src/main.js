@@ -32,7 +32,11 @@ createApp(App)
     })
   )
   .use(YoutubeIframe)
-  .use(PerfectScrollbar)
+  .use(PerfectScrollbar, {
+    options: {
+      suppressScrollX: true,
+    },
+  })
   .use(store)
   .use(router)
   .mount("#app");

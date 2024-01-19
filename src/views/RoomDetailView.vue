@@ -1,6 +1,6 @@
 <template>
   <div class="room">
-    <div class="home_bg-top"></div>
+    <div class="home_bg-top" />
     <div class="room_general-info">
       <div class="container" :style="{ justifyContent: 'center' }">
         <img
@@ -48,17 +48,38 @@
       </div>
     </div>
     <div class="video-container">
-      <youtube-iframe
-        :video-id="videoId"
-        :player-width="720"
-        :player-height="480"
-        @state-change="stateChange"
-        :key="videoId"
-        ref="yt"
-        v-if="videoId.length > 0"
-      ></youtube-iframe>
+      <div v-if="videoId.length > 0" class="video-content">
+        <youtube-iframe
+          :video-id="videoId"
+          :player-width="960"
+          :player-height="540"
+          @state-change="stateChange"
+          :key="videoId"
+          ref="yt"
+        />
+        <div
+          class="userNumber"
+          @mouseenter="isDisplayUsers = true"
+          @mouseout="isDisplayUsers = false"
+        >
+          {{ this.getCurrentUsersEnterRoom.length + " watching" }}
+          <div v-if="isDisplayUsers" class="display-users">
+            <div
+              v-for="user in this.getCurrentUsersEnterRoom"
+              :key="user"
+              class="user-name"
+            >
+              {{ user }}
+            </div>
+          </div>
+        </div>
+      </div>
       <div v-else class="paddingB">Please enter video url and confirm it!</div>
-      <div class="chat-container">
+      <div
+        class="chat-container"
+        @mouseover="onMouseOver"
+        @mouseout="onMouseOut"
+      >
         <perfect-scrollbar class="message-container" id="messageList">
           <div
             class="message-item"
@@ -132,10 +153,15 @@ export default {
       anotherEmit: false,
       previousChanger: null,
       enableByMe: null,
+      isDisplayUsers: false,
     };
   },
   computed: {
-    ...mapGetters("room", ["getRoomList", "getCurrentRoom"]),
+    ...mapGetters("room", [
+      "getRoomList",
+      "getCurrentRoom",
+      "getCurrentUsersEnterRoom",
+    ]),
     ...mapGetters("authentication", ["getProfile", "getIsEnterPassword"]),
 
     recentUrl() {
@@ -144,6 +170,12 @@ export default {
   },
   methods: {
     ...mapActions("room", ["setRoomList", "setCurrentRoom"]),
+    onMouseOver() {
+      document.body.style.overflow = "hidden";
+    },
+    onMouseOut() {
+      document.body.style.overflow = "auto";
+    },
     handleSendMessage() {
       if (this.message != "")
         this.$socket.emit("sendMessage", {
@@ -172,7 +204,6 @@ export default {
     formatDate(data) {
       return moment(data).format("hh:mm A - DD/MM/YYYY");
     },
-
     stateChange(e) {
       const videoState = e.target.playerInfo.playerState;
       const currentTime = e.target.getCurrentTime();
@@ -261,6 +292,7 @@ export default {
       this.createdAt = response.createdAt;
       this.currentVideoUrl = response.currentVideo;
       this.ownerId = response.ownerId;
+      this.linkVideo = response.currentVideo;
     } catch (error) {
       this.$router.push({ path: "/page-not-found" });
     }
@@ -342,20 +374,32 @@ export default {
     }
   }
   .video-container {
-    padding: 42px 80px;
+    padding: 120px 48px;
     background-color: $black-color;
     display: flex;
-
+    width: 100%;
+    .video-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
     .chat-container {
       background-color: $dark-color;
-      flex: 1;
+      height: 540px;
       margin-left: 32px;
       display: flex;
       flex-direction: column;
+      overscroll-behavior: auto;
+      overflow: auto;
+      align-items: space-between;
+      width: 100%;
       .message-container {
         display: flex;
-        height: 440px;
-        overscroll-behavior-y: contain;
+        flex-grow: 1;
+        min-height: 0;
+        width: 100%;
+        overscroll-behavior: contain;
+        overflow: auto;
         flex-direction: column;
         align-items: flex-start;
         color: white;
@@ -371,22 +415,26 @@ export default {
 
 .message-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 8px;
+  flex-direction: row;
+  width: 100%;
 }
 .item {
   margin-left: 6px;
-  max-width: 160px;
+  flex-grow: 1;
+  min-width: 0;
   word-wrap: break-word;
   text-align: left;
-  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.2rem;
 }
 .username {
   font-size: 14px;
   margin-left: 10px;
   color: rgb(156, 156, 156);
+  display: inline-block;
   min-width: 80px;
-  margin-top: 6px;
   text-align: left;
 }
 
@@ -407,9 +455,30 @@ export default {
   justify-content: center;
 }
 
-@media only screen and (min-width: 1240px) {
-  .item {
-    max-width: 400px;
+.userNumber {
+  margin-top: 8px;
+  cursor: pointer;
+  position: relative;
+}
+
+.userNumber:hover {
+  text-decoration: underline;
+}
+
+.display-users {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: auto;
+  min-width: 0;
+  background-color: rgb(155, 155, 155);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 6px 4px;
+  .user-name {
+    display: inline-block;
+    min-width: 120px;
   }
 }
 </style>

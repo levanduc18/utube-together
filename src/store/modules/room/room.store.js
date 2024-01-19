@@ -6,6 +6,7 @@ const state = {
   roomList: [],
   currentRoom: "",
   isEnterPassword: false,
+  currentUsersEnterRoom: [],
 };
 
 export default {
